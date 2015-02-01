@@ -1,0 +1,10 @@
+# http://www.freedesktop.org/software/systemd/man/systemd.timer.html
+# http://www.freedesktop.org/software/systemd/man/systemd.time.html
+
+[Unit]
+Description=Backup data-container every night.
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+Unit=backup.service

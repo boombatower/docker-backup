@@ -1,0 +1,14 @@
+# http://www.freedesktop.org/software/systemd/man/systemd.service.html
+
+[Unit]
+Description=Backup data-container.
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker run --rm \
+  --volumes-from data-container \
+  -e ACCESS_KEY="..." \
+  -e SECRET_KEY="..." \
+  -e BUCKET="s3://[BUCKET]/" \
+  boombatower/docker-backup-s3 backup data-container.tar.xz
