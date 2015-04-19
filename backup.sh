@@ -11,8 +11,14 @@ fi
 file="/backup/$file"
 
 if [ "$1" = "backup" ]; then
-  # Skip first three entries always setup by Docker and 4th which is /backup provided by this image.
-  volumes=$(cat /proc/mounts | grep -oP "/dev/[^ ]+ \K(/[^ ]+)" | tail -n +5 | tr '\n' ' ')
+  # Skip the three host configuration entries always setup by Docker and 4th which is /backup provided by this image.
+  volumes=$(cat /proc/mounts | \
+            grep -oP "/dev/[^ ]+ \K(/[^ ]+)" | \
+            grep -v "/backup" | \
+            grep -v "/etc/resolv.conf" | \
+            grep -v "/etc/hostname" | \
+            grep -v "/etc/hosts" | \
+            tr '\n' ' ')
 
   if [ -z "$volumes" ]; then
     echo "No volumes were detected."
